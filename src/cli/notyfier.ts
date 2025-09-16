@@ -19,7 +19,7 @@ const getStatuses = async (): Promise<string[]> => {
 // redirect url
 const redirectUrl = process.env.REDIRECT_URL || "";
 
-export const checker = (startStatus: string, delay = 1000) => {
+export const checker = (startStatus: string, delay = 10000) => {
   let interval: NodeJS.Timeout;
 
   // check if status has been updated
@@ -44,6 +44,7 @@ export const showAvailableStatuses = (statuses: string[]) =>
 
 // get default start status
 export const getDefaultStartStatus = (statuses: string[]): string => {
+  const defaultStatus = dpdService.getStatusInfo();
   console.log(
     "add start stage as argument if u want track not from current point"
   );
@@ -62,7 +63,7 @@ export const getArgStartStatus = (statuses: string[]) => {
       `Provided status "${argStatus}" not found in available statuses.`
     );
     console.log("Using current status instead.");
-    return statuses[0];
+    return null;
   } else {
     return argStatus;
   }
@@ -75,7 +76,12 @@ const notifyer = async () => {
   if (process.argv.length < 3) {
     startStatus = getDefaultStartStatus(statuses);
   } else {
-    startStatus = getArgStartStatus(statuses);
+    console.log("one");
+    const argStatus = getArgStartStatus(statuses);
+    console.log(argStatus);
+    argStatus
+      ? (startStatus = argStatus)
+      : (startStatus = getDefaultStartStatus(statuses));н
   }
 
   checker(startStatus);
