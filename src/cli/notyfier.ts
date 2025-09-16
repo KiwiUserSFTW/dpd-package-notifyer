@@ -81,7 +81,7 @@ const notifyer = async () => {
     console.log(argStatus);
     argStatus
       ? (startStatus = argStatus)
-      : (startStatus = getDefaultStartStatus(statuses));н
+      : (startStatus = getDefaultStartStatus(statuses));
   }
 
   checker(startStatus);
