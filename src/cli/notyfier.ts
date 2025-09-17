@@ -24,12 +24,11 @@ export const checker = (startStatus: string, delay = 10000) => {
 
   // check if status has been updated
   const check = async () => {
-    const statuses = await getStatuses();
-    const currentStatus = statuses[0];
+    const currentStatus = await dpdService.getStatusInfo();
 
     console.log(currentStatus);
 
-    if (startStatus === currentStatus) return;
+    if (startStatus === currentStatus.status) return;
 
     // open url in default browser
     open(redirectUrl);
