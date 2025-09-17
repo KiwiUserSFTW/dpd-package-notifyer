@@ -43,15 +43,17 @@ export const showAvailableStatuses = (statuses: string[]) =>
   statuses.forEach((status) => console.log(status));
 
 // get default start status
-export const getDefaultStartStatus = (statuses: string[]): string => {
-  const defaultStatus = dpdService.getStatusInfo();
+export const getDefaultStartStatus = async (
+  statuses: string[]
+): Promise<string> => {
+  const defaultStatus = await dpdService.getStatusInfo();
   console.log(
     "add start stage as argument if u want track not from current point"
   );
   console.log(`available statuses:`);
   showAvailableStatuses(statuses);
-
-  return statuses[0];
+  console.log(defaultStatus.status, "default");
+  return defaultStatus.status;
 };
 
 // get argument as start status
@@ -74,7 +76,7 @@ const notifyer = async () => {
   const statuses = await getStatuses();
 
   if (process.argv.length < 3) {
-    startStatus = getDefaultStartStatus(statuses);
+    startStatus = await getDefaultStartStatus(statuses);
   } else {
     console.log("one");
     const argStatus = getArgStartStatus(statuses);
@@ -84,7 +86,7 @@ const notifyer = async () => {
       : (startStatus = getDefaultStartStatus(statuses));
   }
 
-  checker(startStatus);
+  checker(await startStatus);
   console.log(" --------------- ");
   console.log(`status ${startStatus} as start status`);
 };
